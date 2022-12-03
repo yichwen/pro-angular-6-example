@@ -1,0 +1,285 @@
+<h4>Example 01 - Prepare</h4>
+<div class="m-2">
+  <table class="table table-sm table-bordered">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts(); let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+</div>
+
+<hr>
+<h4>Example 02 - Using the Event Binding</h4>
+<div class="m-2">
+  <div class="bg-info text-white p-2">
+    Selected Product: {{selectedProduct || '(None)'}}
+  </div>
+  <table class="table table-sm table-bordered m-2">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts(); let i = index" [class.bg-info]="getSelected(item)">
+      <td (mouseover)="selectedProduct=item.name">{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input class="form-control" (input)="selectedProduct=$event.target.value" />
+  </div>
+</div>
+
+<hr>
+<h4>Example 03 - Using Template Reference Variable</h4>
+<div class="m-2">
+  <div class="bg-info text-white p-2">
+    Selected Product: {{product.value || '(None)'}}
+  </div>
+  <table class="table table-sm table-bordered m-2">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts(); let i = index" [class.bg-info]="product.value == item.name">
+      <td (mouseover)="product.value=item.name">{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input #product class="form-control" (input)="false" />
+  </div>
+</div>
+
+<hr>
+<h4>Example 04 - Using Two Way Data Binding</h4>
+<div class="m-2">
+  <div class="bg-info text-white p-2">
+    Selected Product: {{selectedProduct || '(None)'}}
+  </div>
+  <table class="table table-sm table-bordered m-2">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts(); let i = index" [class.bg-info]="getSelected(item)">
+      <td (mouseover)="selectedProduct=item.name">{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input class="form-control" (input)="selectedProduct=$event.target.value" [value]="selectedProduct || ''" />
+  </div>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input class="form-control" (input)="selectedProduct=$event.target.value" [value]="selectedProduct || ''" />
+  </div>
+</div>
+
+<hr>
+<h4>Example 05 - Using the ngModel Directive</h4>
+<div class="m-2">
+  <div class="bg-info text-white p-2">
+    Selected Product: {{selectedProduct || '(None)'}}
+  </div>
+  <table class="table table-sm table-bordered m-2">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+    <tr *ngFor="let item of getProducts(); let i = index" [class.bg-info]="getSelected(item)">
+      <td (mouseover)="selectedProduct=item.name">{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </table>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input class="form-control" [(ngModel)]="selectedProduct" />
+  </div>
+  <div class="form-group">
+    <label>Product Name</label>
+    <input class="form-control" [(ngModel)]="selectedProduct" />
+  </div>
+</div>
+
+<hr>
+<h4>Example 06 - Working with Forms</h4>
+
+<style>
+  input.ng-dirty.ng-invalid {
+    border: 2px solid #ff0000
+  }
+
+  input.ng-dirty.ng-valid {
+    border: 2px solid #6bc502
+  }
+</style>
+
+<div class="m-2">
+  <div class="bg-info text-white mb-2 p-2">Model Data: {{jsonProduct}}</div>
+  <form novalidate (ngSubmit)="addProduct(newProduct)">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" [(ngModel)]="newProduct.name" name="name" required minlength="5"
+        pattern="^[A-Za-z ]+$" #name="ngModel" />
+      <ul class="text-danger list-unstyled" *ngIf="name.dirty && name.invalid">
+        <li *ngIf="name.errors.required">
+          You must enter a product name
+        </li>
+        <li *ngIf="name.errors.pattern">
+          Product names can only contain letters and spaces
+        </li>
+        <li *ngIf="name.errors.minlength">
+          Product names must be at least
+          {{name.errors.minlength.requiredLength}} characters
+        </li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <input class="form-control" [(ngModel)]="newProduct.category" name="category" />
+    </div>
+    <div class="form-group">
+      <label>Price</label>
+      <input class="form-control" [(ngModel)]="newProduct.price" name="price" />
+    </div>
+    <button class="btn btn-primary" type="submit">Create</button>
+  </form>
+</div>
+
+<hr>
+<h4>Example 06 - Using the Component to Display Validation Messages</h4>
+<div class="m-2">
+  <div class="bg-info text-white mb-2 p-2">Model Data: {{jsonProduct}}</div>
+  <form novalidate (ngSubmit)="addProduct(newProduct)">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.name" #name="ngModel" required minlength="5"
+        pattern="^[A-Za-z ]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="name.dirty && name.invalid">
+        <li *ngFor="let error of getValidationMessages(name)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" type="submit">
+      Create
+    </button>
+  </form>
+</div>
+
+<hr>
+<h4>Example 07 - Validating the Entire Form</h4>
+<div class="m-2">
+  <form novalidate #form="ngForm" (ngSubmit)="submitForm(form)">
+    <div class="bg-danger text-white p-2 mb-2" *ngIf="formSubmitted && form.invalid">
+      There are problems with the form
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.name" #name="ngModel" required minlength="5"
+        pattern="^[A-Za-z ]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || name.dirty) && name.invalid">
+        <li *ngFor="let error of getValidationMessages(name)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" type="submit">
+      Create
+    </button>
+  </form>
+</div>
+
+<hr>
+<h4>Example 08 - Displaying Summary Validation Messages</h4>
+<div class="m-2">
+  <form novalidate #form="ngForm" (ngSubmit)="submitForm(form)">
+    <div class="bg-danger text-white p-2 mb-2" *ngIf="formSubmitted && form.invalid">
+      There are problems with the form
+      <ul>
+        <li *ngFor="let error of getFormValidationMessages(form)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.name" #name="ngModel" required minlength="5"
+        pattern="^[A-Za-z ]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || name.dirty) && name.invalid">
+        <li *ngFor="let error of getValidationMessages(name)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" type="submit">
+      Create
+    </button>
+  </form>
+</div>
+
+<hr>
+<h4>Example 09 - Disable the Submit Button</h4>
+<div class="m-2">
+  <form novalidate #form="ngForm" (ngSubmit)="submitForm(form)">
+    <div class="bg-danger text-white p-2 mb-2" *ngIf="formSubmitted && form.invalid">
+      There are problems with the form
+      <ul>
+        <li *ngFor="let error of getFormValidationMessages(form)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="newProduct.name" #name="ngModel" required minlength="5"
+        pattern="^[A-Za-z ]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || name.dirty) && name.invalid">
+        <li *ngFor="let error of getValidationMessages(name)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <div class="form-group">
+      <label>Price</label>
+      <input class="form-control" name="price" [(ngModel)]="newProduct.price" #price="ngModel" required
+        pattern="^[0-9\.]+$" />
+      <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || price.dirty) && price.invalid">
+        <li *ngFor="let error of getValidationMessages(price)">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" type="submit" [disabled]="formSubmitted && form.invalid"
+      [class.btn-secondary]="formSubmitted && form.invalid">
+      Create
+    </button>
+  </form>
+</div>

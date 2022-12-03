@@ -1,0 +1,16 @@
+div {
+  background-color: lightcoral;
+}
+
+:host:hover {
+  font-size: 25px;
+}
+
+
+/*
+The selector sets the background-color property of input elements within the component's template to lightgrey 
+only if one of the host element' ancestor elements is a member of a class called angularApp
+*/
+:host-context(.angularApp) input {
+  background-color: lightgray;
+}
